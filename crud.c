@@ -27,8 +27,7 @@ int main(){
 
     l= (Livro*) malloc(1*sizeof(Livro));
 
-    do
-    {   
+    do{   
         puts(" ############################# ");
         puts("#| Digite a opção:           |#");
         puts("#| 0-Sair                    |#");
@@ -38,7 +37,7 @@ int main(){
         puts("#| 4-Deletar livro           |#");
         puts(" ############################# ");
         scanf("%d",&seleciona);
-    
+
         if (size_l>0 && seleciona==1){
             l=realloc (l,(size_l+1)*sizeof(Livro));
         }
@@ -100,12 +99,13 @@ int chama(int seleciona,Livro *l,int size_l){
 
 int cadastrar(Livro *l, int size_l){
     printf("Digite o nome do Livro \n");
-    scanf(" %100[^\n]",l[size_l].nome_do_livro);
+    scanf(" %100[^\n]",&l[size_l].nome_do_livro);
     printf("Digite o nome do autor \n");
     scanf(" %100[^\n]",&l[size_l].nome_do_autor);
     printf("Digite o nome da editora \n");
     scanf(" %100[^\n]",&l[size_l].nome_da_editora);
-    return size_l++;
+    size_l=size_l+1;
+    return size_l;
 }
 
 void ler(Livro *l){
@@ -154,7 +154,7 @@ void atualizar(Livro *l){
                 // funcao para limpar string: nome_do_livro
                 memset(l[pos].nome_do_livro,0,strlen(l[pos].nome_do_livro));
                 puts("Digite o novo nome do livro");
-                scanf(" %100[^\n]",l[pos].nome_do_livro);
+                scanf(" %100[^\n]",&l[pos].nome_do_livro);
                 break;
             case 2:
                 // funcao para limpar string: nome_do_autor
