@@ -37,15 +37,12 @@ int main(){
         puts("#| 4-Deletar livro           |#");
         puts(" ############################# ");
         scanf("%d",&seleciona);
-        printf("TAMANHO SIZE_L %d,SELECIONA %d\n",size_l,seleciona);
-        system("sleep 10");
-        // size_l > 0 -> Não ficar sempr     
+
         if (size_l>0 && seleciona==1){
             l=realloc (l,(size_l+1)*sizeof(Livro));
         }
         retorno_chama = chama(seleciona,l,size_l);
-        printf("RETORNO_CHAMA %d\n",retorno_chama);
-        system("sleep 10");
+
         if (retorno_chama==0)
         {
             continue;
@@ -107,7 +104,8 @@ int cadastrar(Livro *l, int size_l){
     scanf(" %100[^\n]",&l[size_l].nome_do_autor);
     printf("Digite o nome da editora \n");
     scanf(" %100[^\n]",&l[size_l].nome_da_editora);
-    return size_l++;
+    size_l=size_l+1;
+    return size_l;
 }
 
 void ler(Livro *l){
