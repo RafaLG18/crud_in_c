@@ -60,37 +60,37 @@ int chama(int seleciona,Livro *l,int size_l){
     switch (seleciona)
     {
     case 0:
-        system("clear");
-        scanf("%c");
+        system("clear ");
+        //scanf("%c");
         printf("Obrigado por usar o nosso programa\n");
         return 0;
         break;
     case 1:
-        system("clear");
-        scanf("%c");
-        fflush(stdin);
+        system("clear ");
+        //scanf("%c");
+        //fflush(stdin);
         return cadastrar(l,size_l);
         break;
     case 2:
-        system("clear");
-        scanf("%c");
+        system("clear ");
+        //scanf("%c");
         ler(l);
         return 0;
         break;
     case 3:
-        system("clear");
-        scanf("%c");
+        system("clear ");
+        //scanf("%c");
         atualizar(l);
         return 0;
         break;
     case 4:
-        system("clear");
-        scanf("%c");
+        system("clear ");
+        //scanf("%c");
         return deletar(l,size_l);
         break;
     default:
         system("clear");
-        scanf("%c");
+        //scanf("%c");
         printf("Digite uma opção disponĩvel\n");
         return 0;
         break;
