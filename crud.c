@@ -15,11 +15,12 @@ typedef struct _livro{
 int chama(int seleciona,Livro *l,int size_l);
 int cadastrar(Livro *l, int size_l);
 void ler(Livro *l,int size_l);
+void ler_lista(Livro *l,int size_l);
+void ler_autor(Livro *l,int size_l);
 void atualizar(Livro *l);
 int deletar(Livro *l,int size_l);
 int busca(char *nome,Livro *l);
 void grava(Livro *l,int size_l);
-void lista(Livro *l,int size_l);
 
 int main(){
     int seleciona;
@@ -113,9 +114,8 @@ int cadastrar(Livro *l, int size_l){
 }
 
 void ler(Livro *l,int size_l){
-    int pos,opcao;
-    char nome[TAM_LIVRO];
-
+    int opcao;
+    
     do
     {
         puts(" ################################# ");
@@ -135,20 +135,10 @@ void ler(Livro *l,int size_l){
             /* code */
             break;
         case 1:
-            printf("Qual nome do livro?\n");
-            scanf(" %100[^\n]",&nome);
-
-            pos=busca(nome,l);
-            if (pos==-1){
-                printf("Infelizmente não foi possível encontrar o livro '%s', tente novamente\n",nome);
-            }else{
-                printf("Livro: %s\n",l[pos].nome_do_livro);
-                printf("Autor: %s\n",l[pos].nome_do_autor);
-                printf("Editora: %s\n",l[pos].nome_da_editora);
-            }
+            ler_autor(l,size_l);
             break;
         case 2:
-            lista(l,size_l);
+            ler_lista(l,size_l);
             break;
         case 3:
             printf("Ainda não implementado\n");
@@ -281,12 +271,14 @@ void grava(Livro *l,int size_l){
             fprintf(f,"Autor: %s\n",l[i].nome_do_autor);
             fprintf(f,"Editora: %s\n",l[i].nome_da_editora);
             fprintf(f,"#################################\n");
+            fprintf(f,"\n");
+
         }    
     }
     fclose(f);
 }
 
-void lista(Livro *l,int size_l){
+void ler_lista(Livro *l,int size_l){
     printf("Listando todos os livros salvos até agora:\n");
     for (int i = 0; i < size_l; i++)
     {
@@ -295,5 +287,22 @@ void lista(Livro *l,int size_l){
         printf("Autor: %s\n",l[i].nome_do_autor);
         printf("Editora: %s\n",l[i].nome_da_editora);
         printf("#################################\n");
+        printf("\n");
+    }
+}
+
+void ler_autor(Livro *l,int size_l){
+    int pos;
+    char nome[TAM_LIVRO];
+
+    printf("Qual nome do livro?\n");
+    scanf(" %100[^\n]",&nome);
+    pos=busca(nome,l);
+    if (pos==-1){
+        printf("Infelizmente não foi possível encontrar o livro '%s', tente novamente\n",nome);
+    }else{
+        printf("Livro: %s\n",l[pos].nome_do_livro);
+        printf("Autor: %s\n",l[pos].nome_do_autor);
+        printf("Editora: %s\n",l[pos].nome_da_editora);
     }
 }
