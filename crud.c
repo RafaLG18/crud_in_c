@@ -17,6 +17,7 @@ int cadastrar(Livro *l, int size_l);
 void ler(Livro *l,int size_l);
 void ler_lista(Livro *l,int size_l);
 void ler_autor(Livro *l,int size_l);
+void ler_arquivo();
 void atualizar(Livro *l);
 int deletar(Livro *l,int size_l);
 int busca(char *nome,Livro *l);
@@ -141,7 +142,7 @@ void ler(Livro *l,int size_l){
             ler_lista(l,size_l);
             break;
         case 3:
-            printf("Ainda não implementado\n");
+            ler_arquivo();
             break;
         default:
             break;
@@ -297,7 +298,9 @@ void ler_autor(Livro *l,int size_l){
 
     printf("Qual nome do livro?\n");
     scanf(" %100[^\n]",&nome);
+    
     pos=busca(nome,l);
+    
     if (pos==-1){
         printf("Infelizmente não foi possível encontrar o livro '%s', tente novamente\n",nome);
     }else{
@@ -305,4 +308,17 @@ void ler_autor(Livro *l,int size_l){
         printf("Autor: %s\n",l[pos].nome_do_autor);
         printf("Editora: %s\n",l[pos].nome_da_editora);
     }
+}
+
+void ler_arquivo(){
+    FILE *f;
+    char *livros;
+
+    if ((f=fopen("livros.txt","a"))==NULL)
+    {
+        printf("Erro na abertura do arquivo\n");
+    }else{
+        printf("size de f %d",sizeof(*f));
+    }
+    fclose(f);   
 }
