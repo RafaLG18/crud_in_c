@@ -18,6 +18,7 @@ void ler(Livro *l);
 void atualizar(Livro *l);
 int deletar(Livro *l,int size_l);
 int busca(char *nome,Livro *l);
+void grava(Livro *l,int size_l);
 
 int main(){
     int seleciona;
@@ -63,6 +64,8 @@ int chama(int seleciona,Livro *l,int size_l){
         system("clear ");
         //scanf("%c");
         printf("Obrigado por usar o nosso programa\n");
+        printf("Gravando as informações....\n");
+        grava(l,size_l);
         return 0;
         break;
     case 1:
@@ -212,8 +215,8 @@ int deletar(Livro *l,int size_l){
        memset(l[(size_l-1)].nome_do_autor,0,strlen(l[(size_l-1)].nome_do_autor));
        memset(l[(size_l-1)].nome_da_editora,0,strlen(l[(size_l-1)].nome_da_editora));
        puts("Apagado\n");
-
-       return size_l-1;
+       size_l=size_l-1;
+       return size_l;
 
    } 
 }
@@ -230,4 +233,23 @@ int busca(char *nome,Livro *l){
         }
     }
 
+}
+
+void grava(Livro *l,int size_l){
+    FILE *f;
+
+    if ((f=fopen("livros.txt","a"))==NULL)
+    {
+        printf("Erro na abertura do arquivo\n");
+    }else{
+        for (int i = 0; i < size_l; i++)
+        {
+            fprintf(f,"#################################\n");
+            fprintf(f,"Livro: %s\n",l[i].nome_do_livro);
+            fprintf(f,"Autor: %s\n",l[i].nome_do_autor);
+            fprintf(f,"Editora: %s\n",l[i].nome_da_editora);
+            fprintf(f,"\n");
+        }    
+    }
+    fclose(f);
 }
