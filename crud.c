@@ -34,11 +34,12 @@ int main(){
     do{   
         puts(" ############################# ");
         puts("#| Digite a opção:           |#");
-        puts("#| 0-Sair                    |#");
-        puts("#| 1-Cadastrar               |#");
-        puts("#| 2-Ler informação do livro |#");
-        puts("#| 3-Atualizar livro         |#");
-        puts("#| 4-Deletar livro           |#");
+        puts("#| 0- Sair                   |#");
+        puts("#| 1- Cadastrar              |#");
+        puts("#| 2- Ler informação do livro|#");
+        puts("#| 3- Atualizar livro        |#");
+        puts("#| 4- Deletar livro          |#");
+        puts("#| 5- Gravar informações     |#");
         puts(" ############################# ");
         scanf("%d",&seleciona);
 
@@ -67,36 +68,34 @@ int chama(int seleciona,Livro *l,int size_l){
         system("clear ");
         //scanf("%c");
         printf("Obrigado por usar o nosso programa\n");
-        printf("Gravando as informações....\n");
-        grava(l,size_l);
         return 0;
         break;
     case 1:
         system("clear ");
-        //scanf("%c");
-        //fflush(stdin);
         return cadastrar(l,size_l);
         break;
     case 2:
         system("clear ");
-        //scanf("%c");
         ler(l,size_l);
         return 0;
         break;
     case 3:
         system("clear ");
-        //scanf("%c");
         atualizar(l);
         return 0;
         break;
     case 4:
         system("clear ");
-        //scanf("%c");
         return deletar(l,size_l);
+        break;
+    case 5:
+        system("clear ");
+        grava(l,size_l);
+        printf("Gravando as informações....\n");
+        return 0;
         break;
     default:
         system("clear");
-        //scanf("%c");
         printf("Digite uma opção disponĩvel\n");
         return 0;
         break;
@@ -318,7 +317,11 @@ void ler_arquivo(){
     {
         printf("Erro na abertura do arquivo\n");
     }else{
-        printf("size de f %d",sizeof(*f));
+        for (int i = 0; i < sizeof(f); i++)
+        {
+            printf("%s",f[i]);
+        }
+        
     }
     fclose(f);   
 }
