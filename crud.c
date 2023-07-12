@@ -22,29 +22,26 @@ void atualizar(Livro *l);
 int deletar(Livro *l,int size_l);
 int busca(char *nome,Livro *l);
 void grava(Livro *l,int size_l);
+int conta_linha(FILE *f);
 
 int main(){
     int seleciona;
     int retorno_chama;
-    int size_l=0;
+    int size_l;
     Livro *l;
     
     FILE *f;
 
-    if ((f=fopen("livros.txt","a"))==NULL)
-    {
+    if ((f=fopen("livros.txt","r"))==NULL){
         printf("Erro na abertura do arquivo\n");
     }else{
-        for (int i = 0; i < size_l; i++)
-        {
-            fprintf(f,"#################################\n");
-            fprintf(f,"Livro: %s\n",l[i].nome_do_livro);
-            fprintf(f,"Autor: %s\n",l[i].nome_do_autor);
-            fprintf(f,"Editora: %s\n",l[i].nome_da_editora);
-            fprintf(f,"#################################\n");
-            fprintf(f,"\n");
-
-        }    
+        printf("O arquivo tem %d linhas\n",conta_linha(f));
+        //size_l=sizeof(*f)/3;
+        //if (size_l==0){
+        //    l= (Livro*) malloc(1*sizeof(Livro));
+        //}else{
+        //    
+        //}
     }
     fclose(f);
 
@@ -343,4 +340,16 @@ void ler_arquivo(){
         
     }
     fclose(f);   
+}
+
+int conta_linha(FILE *f){
+    char c;
+    int conta=0;
+    for ( c = getc(f); c != EOF; c = getc(f)){
+        if (c=='\n')
+        {
+            conta++;
+        }
+    }
+    return conta;   
 }
