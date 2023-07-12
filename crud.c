@@ -28,6 +28,25 @@ int main(){
     int retorno_chama;
     int size_l=0;
     Livro *l;
+    
+    FILE *f;
+
+    if ((f=fopen("livros.txt","a"))==NULL)
+    {
+        printf("Erro na abertura do arquivo\n");
+    }else{
+        for (int i = 0; i < size_l; i++)
+        {
+            fprintf(f,"#################################\n");
+            fprintf(f,"Livro: %s\n",l[i].nome_do_livro);
+            fprintf(f,"Autor: %s\n",l[i].nome_do_autor);
+            fprintf(f,"Editora: %s\n",l[i].nome_da_editora);
+            fprintf(f,"#################################\n");
+            fprintf(f,"\n");
+
+        }    
+    }
+    fclose(f);
 
     l= (Livro*) malloc(1*sizeof(Livro));
 
@@ -267,9 +286,9 @@ void grava(Livro *l,int size_l){
         for (int i = 0; i < size_l; i++)
         {
             fprintf(f,"#################################\n");
-            fprintf(f,"Livro: %s\n",l[i].nome_do_livro);
-            fprintf(f,"Autor: %s\n",l[i].nome_do_autor);
-            fprintf(f,"Editora: %s\n",l[i].nome_da_editora);
+            fprintf(f,"%s\n",l[i].nome_do_livro);
+            fprintf(f,"%s\n",l[i].nome_do_autor);
+            fprintf(f,"%s\n",l[i].nome_da_editora);
             fprintf(f,"#################################\n");
             fprintf(f,"\n");
 
