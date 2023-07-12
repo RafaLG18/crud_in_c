@@ -32,20 +32,23 @@ int main(){
     
     FILE *f;
 
+    /*
+    Lê quantidade de linhas do arquivo para 
+    dividir por 3 e saber quantas posições teremos do struct
+    */
     if ((f=fopen("livros.txt","r"))==NULL){
-        printf("Erro na abertura do arquivo\n");
+        printf("Arquivo inexistente\n");
+        l= (Livro*) malloc(1*sizeof(Livro));
     }else{
-        printf("O arquivo tem %d linhas\n",conta_linha(f));
-        //size_l=sizeof(*f)/3;
-        //if (size_l==0){
-        //    l= (Livro*) malloc(1*sizeof(Livro));
-        //}else{
-        //    
-        //}
+        size_l=conta_linha(f)/3;
+        if (size_l==0){
+            l= (Livro*) malloc(1*sizeof(Livro));
+        }else{
+            l=realloc (l,(size_l+1)*sizeof(Livro));
+        }
     }
     fclose(f);
 
-    l= (Livro*) malloc(1*sizeof(Livro));
 
     do{   
         puts(" ############################# ");
@@ -345,11 +348,18 @@ void ler_arquivo(){
 int conta_linha(FILE *f){
     char c;
     int conta=0;
-    for ( c = getc(f); c != EOF; c = getc(f)){
-        if (c=='\n')
-        {
-            conta++;
+    FILE *f;
+    
+    if ((f=fopen("livros.txt","r"))==NULL){
+        printf("Arquivo inexistente\n");
+        return 0;
+    }else{
+        for ( c = getc(f); c != EOF; c = getc(f)){
+            if (c=='\n')
+            {
+                conta++;
+            }
         }
-    }
-    return conta;   
+    }   
+    fclose(f);
 }
