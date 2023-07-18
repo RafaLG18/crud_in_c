@@ -17,38 +17,38 @@ int cadastrar(Livro *l, int size_l);
 void ler(Livro *l,int size_l);
 void ler_lista(Livro *l,int size_l);
 void ler_autor(Livro *l,int size_l);
-void ler_arquivo();
+void visualiza_arquivo();
 void atualizar(Livro *l);
 int deletar(Livro *l,int size_l);
 int busca(char *nome,Livro *l);
 void grava(Livro *l,int size_l);
-int conta_linha(FILE *f);
+int conta_linha();
+void ler_arquivo(Livro *l,int size_l,FILE *f);
+int verifica_arquivo();
 
 int main(){
     int seleciona;
     int retorno_chama;
     int size_l;
-    Livro *l;
-    
-    FILE *f;
+    Livro *l = NULL;
 
     /*
     Lê quantidade de linhas do arquivo para 
     dividir por 3 e saber quantas posições teremos do struct
     */
-    if ((f=fopen("livros.txt","r"))==NULL){
-        printf("Arquivo inexistente\n");
+    if (verifica_arquivo()==1){
         l= (Livro*) malloc(1*sizeof(Livro));
+        size_l=0;
     }else{
-        size_l=conta_linha(f)/3;
         if (size_l==0){
+            printf("Tamanho eh 0\n");
             l= (Livro*) malloc(1*sizeof(Livro));
         }else{
-            l=realloc (l,(size_l+1)*sizeof(Livro));
+            l=(Livro*) malloc((size_l+1)*sizeof(Livro));
+            printf("size: %d",size_l);
         }
+        //ler_arquivo(l,size_l,f);
     }
-    fclose(f);
-
 
     do{   
         puts(" ############################# ");
@@ -63,6 +63,7 @@ int main(){
         scanf("%d",&seleciona);
 
         if (size_l>0 && seleciona==1){
+
             l=realloc (l,(size_l+1)*sizeof(Livro));
         }
         retorno_chama = chama(seleciona,l,size_l);
@@ -77,6 +78,7 @@ int main(){
         
     } while (seleciona!=0);
     free(l);
+
     return 0;
 }
 
@@ -160,7 +162,7 @@ void ler(Livro *l,int size_l){
             ler_lista(l,size_l);
             break;
         case 3:
-            ler_arquivo();
+            visualiza_arquivo();
             break;
         default:
             break;
@@ -279,18 +281,15 @@ int busca(char *nome,Livro *l){
 void grava(Livro *l,int size_l){
     FILE *f;
 
-    if ((f=fopen("livros.txt","a"))==NULL)
+    if ((f=fopen("livros.txt","w+"))==NULL)
     {
         printf("Erro na abertura do arquivo\n");
     }else{
         for (int i = 0; i < size_l; i++)
         {
-            fprintf(f,"#################################\n");
             fprintf(f,"%s\n",l[i].nome_do_livro);
             fprintf(f,"%s\n",l[i].nome_do_autor);
             fprintf(f,"%s\n",l[i].nome_da_editora);
-            fprintf(f,"#################################\n");
-            fprintf(f,"\n");
 
         }    
     }
@@ -328,11 +327,11 @@ void ler_autor(Livro *l,int size_l){
     }
 }
 
-void ler_arquivo(){
+void visualiza_arquivo(){
     FILE *f;
     char *livros;
 
-    if ((f=fopen("livros.txt","a"))==NULL)
+    if ((f=fopen("livros.txt","r"))==NULL)
     {
         printf("Erro na abertura do arquivo\n");
     }else{
@@ -340,12 +339,12 @@ void ler_arquivo(){
         {
             printf("%s",f[i]);
         }
-        
+        fclose(f);    
     }
-    fclose(f);   
+       
 }
 
-int conta_linha(FILE *f){
+int conta_linha(){
     char c;
     int conta=0;
     FILE *f;
@@ -360,6 +359,76 @@ int conta_linha(FILE *f){
                 conta++;
             }
         }
+        fclose(f);
+        return conta;
     }   
-    fclose(f);
+}
+int verifica_arquivo(){
+    FILE *f;
+    int size_l;
+    /*
+    Lê quantidade de linhas do arquivo para 
+    dividir por 3 e saber quantas posições teremos do struct
+    */
+    if ((f=fopen("livros.txt","r"))==NULL){
+        printf("Arquivo inexistente\n");
+        return 1;
+    }else{
+        printf("Entrou no else");
+        size_l=conta_linha()/3;
+        printf("size_l recebeu,tamanho é %d\n",size_l);
+        fclose(f);
+        return size_l;
+    }
+}
+void ler_arquivo(Livro *l,int size_l, FILE *f){
+    char palavra[TAM_LIVRO]=NULL;
+    int conta_linha=0, size=0;
+
+    FILE *f;
+    if ((f=fopen("livros.txt","r"))==NULL){
+        printf("Arquivo inexistente\n");
+    }else{
+        while (fscanf(f,"%s\n",palavra)!=EOF)
+        {
+            printf("%s\n",palavra);
+            switch (conta_linha)
+            {
+            case 0:
+                strcpy(palavra,l[size].nome_do_livro);
+                memset(palavra,0,strlen(palavra));
+                break;
+            case 1:
+                strcpy(palavra,l[size].nome_do_autor);
+                memset(palavra,0,strlen(palavra));
+                break;
+            case 2:
+                strcpy(palavra,l[size].nome_da_editora);
+                memset(palavra,0,strlen(palavra));
+                break;
+            case 3:
+                strcpy(palavra,l[size].nome_do_livro);
+                memset(palavra,0,strlen(palavra));
+                break;
+            default:
+                break;
+            }
+            conta_linha++;
+            if (conta_linha/3==1)
+            {
+                size++;
+                conta_linha=0;
+            }else{
+                continue;
+            }
+            
+        }
+        fclose(f);
+        return size_l;
+    }
+    
+    //fscanf(f,"%s\n",teste);
+    
+    //printf("%s",teste);
+    
 }
