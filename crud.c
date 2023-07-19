@@ -17,13 +17,13 @@ int cadastrar(Livro *l, int size_l);
 void ler(Livro *l,int size_l);
 void ler_lista(Livro *l,int size_l);
 void ler_autor(Livro *l,int size_l);
-void visualiza_arquivo();
 void atualizar(Livro *l);
 int deletar(Livro *l,int size_l);
 int busca(char *nome,Livro *l);
 void grava(Livro *l,int size_l);
 int conta_linha();
-void ler_arquivo(Livro *l);
+void visualiza_arquivo();
+void armazena_arquivo(Livro *l);
 int verifica_arquivo();
 
 int main(){
@@ -38,7 +38,6 @@ int main(){
     */
    retorno_verifica_livro=verifica_arquivo();
 
-   printf("Retorno de verifica livro: %d\n",retorno_verifica_livro);
     if (retorno_verifica_livro==1){
         l= (Livro*) malloc(1*sizeof(Livro));
         size_l=0;
@@ -50,7 +49,7 @@ int main(){
         }else{
             l=(Livro*) malloc((size_l+1)*sizeof(Livro));
         }
-        ler_arquivo(l);
+        armazena_arquivo(l);
     }
 
     do{   
@@ -149,7 +148,8 @@ void ler(Livro *l,int size_l){
         puts("#| 1- Por nome de autor          |#");
         puts("#| 2- Todos os livros na memoria |#");
         puts("#| 3- Todos os livros no arquivo |#");
-        puts("#| 0- Sair                       |#");
+        puts("#|###############################|#");
+        puts("#| 0- Menu principal             |#");
         puts(" ################################# ");
         scanf("%d", &opcao);
 
@@ -157,6 +157,7 @@ void ler(Livro *l,int size_l){
         {
         case 0:
             /* code */
+            system("clear ");
             break;
         case 1:
             ler_autor(l,size_l);
@@ -192,12 +193,13 @@ void atualizar(Livro *l){
             puts("# 2- Nome do autor              #");
             puts("# 3- Nome da editora            #");
             puts("#################################");
-            puts("# Pra sair digite 0             #");
+            puts("# 0- Menu principal             #");
             puts("#################################");
             scanf("%d",&opcao);
             switch (opcao)
             {
             case 0:
+                system("clear ");
                 break;
             case 1:
                 // funcao para limpar string: nome_do_livro
@@ -226,7 +228,7 @@ void atualizar(Livro *l){
                 break;
             }
         } while (opcao!=0);
-        
+        puts("Livro atualizado:");
         printf("Livro: %s\n",l[pos].nome_do_livro);
         printf("Autor: %s\n",l[pos].nome_do_autor);
         printf("Editora: %s\n",l[pos].nome_da_editora);
@@ -332,15 +334,15 @@ void ler_autor(Livro *l,int size_l){
 
 void visualiza_arquivo(){
     FILE *f;
-    char *livros;
+    char array[TAM_LIVRO];
 
     if ((f=fopen("livros.txt","r"))==NULL)
     {
         printf("Arquivo inexistente\n");
     }else{
-        for (int i = 0; i < sizeof(f); i++)
-        {
-            printf("%s",f[i]);
+        printf("Conteudo do livro:\n");
+        while (fscanf(f,"%s\n",array)!=EOF){
+            printf("%s\n",array);
         }
         fclose(f);    
     }
@@ -384,7 +386,7 @@ int verifica_arquivo(){
     }
 }
 
-void ler_arquivo(Livro *l){
+void armazena_arquivo(Livro *l){
     char palavra[TAM_LIVRO]={0};
     int conta_linha=1, size=0;
     FILE *f;
@@ -393,26 +395,19 @@ void ler_arquivo(Livro *l){
     }else{
         while (fscanf(f,"%s\n",palavra)!=EOF)
         {
-            printf("\n%s\n",palavra);
             switch (conta_linha)
             {
             case 1:
-                printf("Passou no case 1\n");
-                printf("size:%d\n",size);
                 strcpy(l[size].nome_do_livro,palavra);
                 memset(palavra,0,strlen(palavra));
                 conta_linha++;
                 break;
             case 2:
-                printf("Passou no case 2\n");
-                printf("size:%d\n",size);
                 strcpy(l[size].nome_do_autor,palavra);
                 memset(palavra,0,strlen(palavra));
                 conta_linha++;
                 break;
             case 3:
-                printf("Passou no case 3\n");
-                printf("size:%d\n",size);
                 strcpy(l[size].nome_da_editora,palavra);
                 memset(palavra,0,strlen(palavra));
                 conta_linha=1;
