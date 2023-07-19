@@ -14,17 +14,17 @@ typedef struct _livro{
 
 int chama(int seleciona,Livro *l,int size_l);
 int cadastrar(Livro *l, int size_l);
+int deletar(Livro *l,int size_l);
+void atualizar(Livro *l);
+void gravar(Livro *l,int size_l);
 void ler(Livro *l,int size_l);
 void ler_lista(Livro *l,int size_l);
 void ler_autor(Livro *l,int size_l);
-void atualizar(Livro *l);
-int deletar(Livro *l,int size_l);
-int busca(char *nome,Livro *l);
-void grava(Livro *l,int size_l);
-int conta_linha();
-void visualiza_arquivo();
+void ler_arquivo();
 void armazena_arquivo(Livro *l);
 int verifica_arquivo();
+int conta_linha();
+int busca(char *nome,Livro *l);
 
 int main(){
     int seleciona;
@@ -89,7 +89,7 @@ int chama(int seleciona,Livro *l,int size_l){
     {
     case 0:
         system("clear ");
-        grava(l,size_l);
+        gravar(l,size_l);
         printf("Obrigado por usar o nosso programa\n");
         return 0;
         break;
@@ -113,7 +113,7 @@ int chama(int seleciona,Livro *l,int size_l){
         break;
     case 5:
         system("clear ");
-        grava(l,size_l);
+        gravar(l,size_l);
         printf("Gravando as informações....\n");
         return 0;
         break;
@@ -166,7 +166,7 @@ void ler(Livro *l,int size_l){
             ler_lista(l,size_l);
             break;
         case 3:
-            visualiza_arquivo();
+            ler_arquivo();
             break;
         default:
             break;
@@ -283,7 +283,7 @@ int busca(char *nome,Livro *l){
 
 }
 
-void grava(Livro *l,int size_l){
+void gravar(Livro *l,int size_l){
     FILE *f;
 
     if ((f=fopen("livros.txt","w+"))==NULL)
@@ -332,7 +332,7 @@ void ler_autor(Livro *l,int size_l){
     }
 }
 
-void visualiza_arquivo(){
+void ler_arquivo(){
     FILE *f;
     char array[TAM_LIVRO];
 
