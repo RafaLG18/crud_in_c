@@ -23,12 +23,12 @@ int deletar(Livro *l,int size_l);
 int busca(char *nome,Livro *l);
 void grava(Livro *l,int size_l);
 int conta_linha();
-void ler_arquivo(Livro *l,int size_l,FILE *f);
+void ler_arquivo(Livro *l);
 int verifica_arquivo();
 
 int main(){
     int seleciona;
-    int retorno_chama;
+    int retorno_chama,retorno_verifica_livro;
     int size_l;
     Livro *l = NULL;
 
@@ -36,18 +36,21 @@ int main(){
     Lê quantidade de linhas do arquivo para 
     dividir por 3 e saber quantas posições teremos do struct
     */
-    if (verifica_arquivo()==1){
+   retorno_verifica_livro=verifica_arquivo();
+
+   printf("Retorno de verifica livro: %d\n",retorno_verifica_livro);
+    if (retorno_verifica_livro==1){
         l= (Livro*) malloc(1*sizeof(Livro));
         size_l=0;
-    }else{
+    }else if(retorno_verifica_livro!=1 && retorno_verifica_livro>=0 ){
+        size_l=retorno_verifica_livro;
+        // Se arquivo exitir, mas estiver vazio
         if (size_l==0){
-            printf("Tamanho eh 0\n");
             l= (Livro*) malloc(1*sizeof(Livro));
         }else{
             l=(Livro*) malloc((size_l+1)*sizeof(Livro));
-            printf("size: %d",size_l);
         }
-        //ler_arquivo(l,size_l,f);
+        ler_arquivo(l);
     }
 
     do{   
@@ -87,7 +90,7 @@ int chama(int seleciona,Livro *l,int size_l){
     {
     case 0:
         system("clear ");
-        //scanf("%c");
+        grava(l,size_l);
         printf("Obrigado por usar o nosso programa\n");
         return 0;
         break;
@@ -333,7 +336,7 @@ void visualiza_arquivo(){
 
     if ((f=fopen("livros.txt","r"))==NULL)
     {
-        printf("Erro na abertura do arquivo\n");
+        printf("Arquivo inexistente\n");
     }else{
         for (int i = 0; i < sizeof(f); i++)
         {
@@ -363,6 +366,7 @@ int conta_linha(){
         return conta;
     }   
 }
+
 int verifica_arquivo(){
     FILE *f;
     int size_l;
@@ -374,61 +378,50 @@ int verifica_arquivo(){
         printf("Arquivo inexistente\n");
         return 1;
     }else{
-        printf("Entrou no else");
         size_l=conta_linha()/3;
-        printf("size_l recebeu,tamanho é %d\n",size_l);
         fclose(f);
         return size_l;
     }
 }
-void ler_arquivo(Livro *l,int size_l, FILE *f){
-    char palavra[TAM_LIVRO]=NULL;
-    int conta_linha=0, size=0;
 
+void ler_arquivo(Livro *l){
+    char palavra[TAM_LIVRO]={0};
+    int conta_linha=1, size=0;
     FILE *f;
     if ((f=fopen("livros.txt","r"))==NULL){
         printf("Arquivo inexistente\n");
     }else{
         while (fscanf(f,"%s\n",palavra)!=EOF)
         {
-            printf("%s\n",palavra);
+            printf("\n%s\n",palavra);
             switch (conta_linha)
             {
-            case 0:
-                strcpy(palavra,l[size].nome_do_livro);
-                memset(palavra,0,strlen(palavra));
-                break;
             case 1:
-                strcpy(palavra,l[size].nome_do_autor);
+                printf("Passou no case 1\n");
+                printf("size:%d\n",size);
+                strcpy(l[size].nome_do_livro,palavra);
                 memset(palavra,0,strlen(palavra));
+                conta_linha++;
                 break;
             case 2:
-                strcpy(palavra,l[size].nome_da_editora);
+                printf("Passou no case 2\n");
+                printf("size:%d\n",size);
+                strcpy(l[size].nome_do_autor,palavra);
                 memset(palavra,0,strlen(palavra));
+                conta_linha++;
                 break;
             case 3:
-                strcpy(palavra,l[size].nome_do_livro);
+                printf("Passou no case 3\n");
+                printf("size:%d\n",size);
+                strcpy(l[size].nome_da_editora,palavra);
                 memset(palavra,0,strlen(palavra));
+                conta_linha=1;
+                size++;
                 break;
             default:
                 break;
             }
-            conta_linha++;
-            if (conta_linha/3==1)
-            {
-                size++;
-                conta_linha=0;
-            }else{
-                continue;
-            }
-            
         }
         fclose(f);
-        return size_l;
-    }
-    
-    //fscanf(f,"%s\n",teste);
-    
-    //printf("%s",teste);
-    
+    }   
 }
